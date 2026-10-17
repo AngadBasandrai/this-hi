@@ -1,10 +1,14 @@
 <!--
 title: Guestbook
 slug: guestbook
-description: Sign the thishi.org guestbook.
+description: The thishi.org guestbook.
 -->
 <h2>Write on the Guestbook</h2>
-<p>Entries are posted as issues on the site&rsquo;s GitHub repository, so you&rsquo;ll need a GitHub account.</p>
-<p><a class="button" href="https://github.com/AngadBasandrai/this-hi/issues/new?title=Guestbook%3A%20&amp;body=">Sign the guestbook</a></p>
+<form class="form" data-issue-prefix="Guestbook">
+  <label>Name <input name="name" required></label>
+  <label>Country <input name="country"></label>
+  <label>Message <textarea name="message" rows="6" required></textarea></label>
+  <button class="button" type="submit">Send</button>
+</form>
 
-<div data-issues="Guestbook"><p class="live-status">Loading entries&hellip;</p></div>
+<div data-issues="Guestbook"></div>

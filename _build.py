@@ -21,7 +21,7 @@ NAV = [
     ("history", "History"),
     ("theories", "Theories"),
     ("dreams", "Dreams"),
-    ("portraits", "Portraits"),
+    ("portrait", "Portraits"),
     ("in-the-world", "In the World"),
     ("download", "Download"),
     ("fan-art", "Fan Art"),
@@ -31,8 +31,8 @@ NAV = [
 
 # Shown in the right-hand NEWS widget; keep in sync with _pages/news.html.
 NEWS = [
-    ("thishi.org is online", "/news/#online"),
-    ("The poster: &ldquo;Ever dream this man?&rdquo;", "/news/#poster"),
+    ("This Hi in Azide&rsquo;s Poster", "/this-hi-in-azides-poster/"),
+    ("Was This Hi Caught on Camera?", "/was-this-hi-caught-on-camera/"),
 ]
 
 ICON_X = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.9 1.2h3.7l-8 9.2 9.4 12.4h-7.4l-5.8-7.6-6.6 7.6H.5l8.6-9.8L0 1.2h7.6l5.2 6.9 6.1-6.9zm-1.3 19.4h2L6.5 3.3H4.3l13.3 17.3z"/></svg>'
@@ -65,7 +65,7 @@ LAYOUT = """<!doctype html>
   <div class="branding">
     <a href="/"><img class="portrait" src="/assets/portrait-sidebar.png" alt="Black and white sketch of the cat" width="200" height="235"></a>
     <a class="site-title" href="/">Ever dream this hi?</a>
-    <p class="site-desc">Have you seen this cat in your dreams?</p>
+    <p class="site-desc">Every night all over the world hundreds of people get a hi from this cat</p>
   </div>
   <nav class="left-nav" aria-label="Main">
     <input type="checkbox" id="menu" class="menu-toggle">
@@ -94,11 +94,11 @@ LAYOUT = """<!doctype html>
     </section>
     <section class="widget plain">
       <h3>Contact</h3>
-      <a href="/contact/">Get in touch</a>
+      <a href="/contact/">www.thishi.org/contact</a>
     </section>
     <section class="widget plain">
-      <h3>The poster</h3>
-      <a href="https://x.com/azzyazide/status/2111359361851252860">x.com/azzyazide</a>
+      <h3>Old website</h3>
+      <a href="https://www.thisman.org/">www.thisman.org</a>
     </section>
     <section class="widget">
       <h3>Social</h3>
@@ -110,8 +110,8 @@ LAYOUT = """<!doctype html>
   </aside>
 </div>
 <footer class="footer">
-  thishi.org &copy; {year}
-  <span class="parody">A fan-made parody of <a href="https://thisman.org/">thisman.org</a>.</span>
+  thishi.org &copy; 2025-{year}
+  <span class="parody">A parody of <a href="https://www.thisman.org/">thisman.org</a></span>
 </footer>
 </div>
 <script src="/assets/site.js" defer></script>
@@ -143,7 +143,7 @@ def build():
         out_path = ROOT / ("index.html" if home else "404.html" if slug == "404" else f"{slug}/index.html")
         html = LAYOUT.format(
             title=meta["title"] if home else f'{meta["title"]} | Ever dream this hi?',
-            description=meta.get("description", "Have you seen this cat in your dreams? It may have said hi."),
+            description=meta.get("description", "Every night all over the world hundreds of people get a hi from this cat."),
             url=SITE + ("/" if home else f"/{slug}/"),
             site=SITE,
             repo=REPO,

@@ -91,3 +91,56 @@ ImageDraw.Draw(mask).ellipse((w * .02, h * .02, w * .98, h * 1.12), fill=255)
 mask = mask.filter(ImageFilter.GaussianBlur(28))
 side = Image.composite(ink, Image.new("L", (w, h), 255), mask).resize((400, 470), Image.LANCZOS)
 side.save(A / "portrait-sidebar.png", optimize=True)
+
+# multilingual flyers for /download/ (A4 at 150 dpi), face in the photocopy style of the original poster
+import textwrap
+
+FLYERS = {
+    "english": ("EVER DREAM", "THIS HI?",
+                "Every night, all over the world, this cat says hi to people in their dreams. "
+                "If it has said hi to you, or if you know who it is, get in touch."),
+    "espanol": ("¿HAS SOÑADO", "CON ESTE HI?",
+                "Cada noche, en todo el mundo, este gato saluda a la gente en sus sueños. "
+                "Si te ha dicho hola a ti, o si sabes quién es, escríbenos."),
+    "francais": ("AVEZ-VOUS RÊVÉ", "DE CE HI ?",
+                 "Chaque nuit, partout dans le monde, ce chat dit bonjour aux gens dans leurs rêves. "
+                 "S'il vous a dit bonjour, ou si vous savez qui il est, contactez-nous."),
+    "italiano": ("HAI MAI SOGNATO", "QUESTO HI?",
+                 "Ogni notte, in tutto il mondo, questo gatto saluta le persone nei loro sogni. "
+                 "Se ha salutato anche te, o se sai chi è, contattaci."),
+    "deutsch": ("SCHON MAL VON", "DIESEM HI GETRÄUMT?",
+                "Jede Nacht, überall auf der Welt, sagt diese Katze Menschen im Traum Hallo. "
+                "Wenn sie auch dir Hallo gesagt hat oder du weißt, wer sie ist, melde dich."),
+    "portugues": ("JÁ SONHOU", "COM ESTE HI?",
+                  "Todas as noites, no mundo inteiro, este gato diz oi às pessoas nos seus sonhos. "
+                  "Se ele disse oi para você, ou se sabe quem ele é, fale conosco."),
+}
+
+fdir = A / "flyers"
+fdir.mkdir(exist_ok=True)
+face_src = Image.open(A / "portrait-sidebar.png").convert("L")
+for lang, (l1, l2, body_text) in FLYERS.items():
+    W, H = 1240, 1754
+    im = Image.new("L", (W, H), 255)
+    d = ImageDraw.Draw(im)
+    size = 150
+    while True:
+        head = ImageFont.truetype(str(FONTS / "ROCKB.TTF"), size)
+        if max(d.textlength(l1, font=head), d.textlength(l2, font=head)) <= W - 120:
+            break
+        size -= 4
+    text_centered(d, 70, l1, head, W)
+    text_centered(d, 70 + int(size * 1.12), l2, head, W)
+    top = 70 + int(size * 2.35)
+    fw = 880
+    fh = int(fw * face_src.height / face_src.width)
+    fh = min(fh, 1380 - top)
+    fw = int(fh * face_src.width / face_src.height)
+    im.paste(face_src.resize((fw, fh), Image.LANCZOS), ((W - fw) // 2, top))
+    bf = ImageFont.truetype(str(FONTS / "calibri.ttf"), 40)
+    for i, line in enumerate(textwrap.wrap(body_text, 56)):
+        text_centered(d, 1430 + i * 52, line, bf, W)
+    text_centered(d, 1650, "www.thishi.org", ImageFont.truetype(str(FONTS / "calibrib.ttf"), 64), W)
+    rgb = im.convert("RGB")
+    rgb.save(fdir / f"thishi-{lang}.pdf", resolution=150)
+    rgb.resize((248, 351), Image.LANCZOS).save(fdir / f"thishi-{lang}.jpg", quality=85)

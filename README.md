@@ -14,8 +14,7 @@ Static site served by GitHub Pages at https://thishi.org.
   python _build.py
   ```
 
-- Styles: `assets/style.css` (layout modelled on thisman.org). Live entries: `assets/site.js`.
-- The site only states verifiable facts; everything else comes from real submissions.
+- Styles: `assets/style.css` (layout mirrors thisman.org). Live entries: `assets/site.js`.
 - Derived images (sketches, poster, icons) are generated from `assets/avatar.jpg` by `_make_images.py` (needs Pillow + numpy):
 
   ```sh
@@ -24,8 +23,8 @@ Static site served by GitHub Pages at https://thishi.org.
 
 ## Live entries
 
-Dreams, In the World, Fan Art and Guestbook entries (and the dream count on the home page) come from this repo's GitHub issues. Any issue whose title starts with
-`Dream:`, `Sighting:`, `Fan art:` or `Guestbook:` shows up on the matching page. Close an issue to remove it from the site.
+Dreams, In the World, Fan Art and Guestbook entries come from this repo's GitHub issues. Any issue whose title starts with
+`Dream:`, `Sighting:`, `Fan art:` or `Guestbook:` shows up on the matching page. The Contact and Guestbook forms open a prefilled issue. Close an issue to remove it from the site.
 
 ## Preview locally
 

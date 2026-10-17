@@ -153,3 +153,19 @@ a:hover { color: #222; }
   .area { padding: 30px 16px 40px; }
   .home .content { font-size: 17px; }
 }
+
+/* forms (contact, guestbook) */
+.form { display: grid; gap: 14px; max-width: 520px; margin: 0 0 30px; }
+.form label { display: grid; gap: 4px; font-size: 14px; }
+.form input, .form textarea {
+  font: 15px/1.5 var(--font); color: #333; padding: 8px 10px;
+  border: 1px solid #ccc; background: #fff; border-radius: 0; width: 100%;
+}
+.form button { justify-self: start; border: 0; cursor: pointer; font-family: var(--font); }
+
+.gallery.flyers img { aspect-ratio: 248 / 351; }
+.content > a > img, .post > a > img { margin: 0 0 16px; }
+.content .meta { font-size: 13px; color: #999; margin: 0 0 14px; }
+.post h2 a { color: var(--heading); text-decoration: none; }
+
+del { text-decoration: line-through; text-decoration-thickness: 2px; }
