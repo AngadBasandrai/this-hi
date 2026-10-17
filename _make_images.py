@@ -34,21 +34,11 @@ big = src.resize((800, 800), Image.LANCZOS)
 # main portrait: pencil sketch, faded edges
 sketch = vignette(pencil(big))
 sketch.save(A / "hi.png", optimize=True)
-sketch.resize((96, 96), Image.LANCZOS).save(A / "hi-thumb.png", optimize=True)
 sketch.resize((180, 180), Image.LANCZOS).save(A / "apple-touch-icon.png", optimize=True)
 sketch.resize((32, 32), Image.LANCZOS).save(A / "favicon.png", optimize=True)
 
 # portrait variants
 g = ImageOps.grayscale(big)
-variants = {
-    "portrait-photocopy.png": vignette(g.point(lambda p: 255 if p > 118 else 0)),
-    "portrait-charcoal.png": vignette(ImageOps.autocontrast(ImageEnhance.Contrast(g).enhance(2.2).filter(ImageFilter.SMOOTH_MORE))),
-    "portrait-lines.png": vignette(ImageOps.invert(g.filter(ImageFilter.FIND_EDGES)).point(lambda p: 255 if p > 200 else p * .6)),
-    "portrait-faded.png": vignette(ImageEnhance.Contrast(pencil(big, 25)).enhance(.7)),
-    "portrait-posterized.png": vignette(ImageOps.posterize(g, 2)),
-}
-for name, im in variants.items():
-    im.resize((500, 500), Image.LANCZOS).save(A / name, optimize=True)
 big.resize((500, 500), Image.LANCZOS).save(A / "portrait-photo.jpg", quality=85)
 
 
@@ -69,10 +59,10 @@ text_centered(d, 260, "THIS HI?", head, W)
 face = sketch.resize((900, 900), Image.LANCZOS)
 poster.paste(face, ((W - 900) // 2, 470))
 lines = [
-    "Every night, all over the world, people fall asleep and",
-    "meet this cat. It looks at them. It says \u201cHi.\u201d Then nothing else.",
-    "If this cat has said hi to you in a dream, or if you know",
-    "who it is, please get in touch.",
+    "Have you seen this cat in your dreams?",
+    "It may have said hi.",
+    "If it has, or if you know who it is,",
+    "please get in touch.",
 ]
 for i, line in enumerate(lines):
     text_centered(d, 1420 + i * 52, line, body, W)
@@ -90,3 +80,14 @@ d.text((620, 290), "THIS HI?", font=h2, fill=0)
 d.text((624, 440), "www.thishi.org", font=ImageFont.truetype(str(FONTS / "calibrib.ttf"), 48), fill=0)
 og.convert("RGB").save(A / "og.jpg", quality=88)
 print("done")
+
+# sidebar portrait in the style of a high-contrast photocopied sketch (200x235 box, 2x)
+crop = ImageOps.grayscale(big).crop((70, 30, 730, 806))
+crop = ImageEnhance.Contrast(crop).enhance(1.4)
+ink = crop.point(lambda p: 255 if p > 112 else 0).filter(ImageFilter.MedianFilter(3))
+w, h = ink.size
+mask = Image.new("L", (w, h), 0)
+ImageDraw.Draw(mask).ellipse((w * .02, h * .02, w * .98, h * 1.12), fill=255)
+mask = mask.filter(ImageFilter.GaussianBlur(28))
+side = Image.composite(ink, Image.new("L", (w, h), 255), mask).resize((400, 470), Image.LANCZOS)
+side.save(A / "portrait-sidebar.png", optimize=True)
